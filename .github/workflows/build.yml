@@ -2,6 +2,9 @@ name: Build
 
 on: [push]
 
+env:
+  VCPKG_COMMIT_HASH: 84a143e4caf6b70db57f28d04c41df4a85c480fa
+
 jobs:
   Linux:
     runs-on: ubuntu-latest
@@ -35,11 +38,26 @@ jobs:
 
   Windows:
     runs-on: windows-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - triplet: x64-windows-static
     steps:
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
+      - uses: lukka/get-cmake@latest
+      - name: Install vcpkg and packages
+        uses: lukka/run-vcpkg@v11
+        id: runvcpkg
+        env:
+          VCPKG_DEFAULT_TRIPLET: ${{ matrix.triplet }}
+          VCPKG_INSTALLED_DIR: ${{ github.workspace }}/vcpkg/installed/${{ matrix.triplet }}
+        with:
+          vcpkgGitCommitId: '${{ env.VCPKG_COMMIT_HASH }}'
+          runVcpkgInstall: true
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
