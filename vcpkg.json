@@ -1,5 +1,5 @@
 {
-    "name": "OpenNFS-dependencies",
+    "name": "opennfs-dependencies",
     "version-string": "1",
     "description": "Dependencies for OpenNFS",
     "dependencies": [
