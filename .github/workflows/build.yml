@@ -43,13 +43,17 @@ jobs:
       - uses: ilammy/msvc-dev-cmd@v1
         with:
           arch: x64
+      - name: Configure
+        run: |
+          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows .
+      - name: Publish artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: OpenNFS-Linux
+          path: |
+            bin/build.ninja
       - name: Build
         run: |
-          curl -LO https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip
-          Expand-Archive ninja-win.zip C:/Ninja
-          $env:Path += ';C:\Ninja'
-          ninja --version
-          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows .
           cmake --build bin --config Release
           cp bin\Release\OpenNFS.exe bin\OpenNFS.exe
           cp LICENSE LICENSE.txt
