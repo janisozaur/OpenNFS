@@ -63,7 +63,7 @@ jobs:
           arch: x64
       - name: Configure
         run: |
-          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows .
+          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} .
       - name: Publish artifacts
         uses: actions/upload-artifact@v4
         with:
