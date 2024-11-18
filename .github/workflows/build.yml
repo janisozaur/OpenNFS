@@ -49,7 +49,7 @@ jobs:
       - name: Publish artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: OpenNFS-Linux
+          name: OpenNFS-Windows-build.ninja
           path: |
             bin/build.ninja
       - name: Build
