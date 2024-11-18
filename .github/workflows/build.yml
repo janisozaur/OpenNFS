@@ -9,15 +9,15 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake libgl-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
+          sudo apt-get install -y cmake libgl-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev ninja-build
       - name: Checkout
         uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Build
         run: |
-          cmake -B bin -DCMAKE_BUILD_TYPE=Release .
-          cmake --build bin --parallel 4
+          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release .
+          cmake --build bin
       - name: Publish artifacts
         uses: actions/upload-artifact@v4
         with:
