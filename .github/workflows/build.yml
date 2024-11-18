@@ -42,8 +42,12 @@ jobs:
           submodules: recursive
       - name: Build
         run: |
-          cmake -B bin -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows -A x64 .
-          cmake --build bin --config Release --parallel 4
+          call "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Auxiliary/Build/vcvarsall.bat" amd64
+          curl -LO https://github.com/ninja-build/ninja/releases/download/v1.12.1/ninja-win.zip
+          Expand-Archive ninja-win.zip C:/Ninja
+          $env:Path += ';C:\Ninja'
+          cmake -B bin -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=C:\vcpkg\scripts\buildsystems\vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows .
+          cmake --build bin --config Release
           cp bin\Release\OpenNFS.exe bin\OpenNFS.exe
           cp LICENSE LICENSE.txt
       - name: Publish artifacts
